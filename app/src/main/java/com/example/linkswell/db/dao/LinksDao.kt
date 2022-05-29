@@ -19,4 +19,7 @@ interface LinksDao {
     @Query("SELECT * FROM links_table WHERE original_link = :link")
     fun getLinkDetailsFromLink(link: String): Flow<LinkEntity?>
 
+    @Query("SELECT * FROM links_table ORDER BY group_name")
+    fun getAllLinks(): Flow<List<LinkEntity>>
+
 }

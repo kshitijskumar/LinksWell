@@ -1,13 +1,14 @@
 package com.example.linkswell.di
 
 import android.content.Context
-import com.example.linkswell.MainActivity
+import com.example.linkswell.home.di.LinksModule
+import com.example.linkswell.home.ui.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class])
+@Component(modules = [AppModule::class, LinksModule::class])
 interface AppComponent {
 
     @Component.Builder
