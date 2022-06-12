@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -77,9 +78,11 @@ class SaveLinkFragment : Fragment() {
             }
 
             launch {
-                intentChannel.receiveAsFlow()
-                    .onEach { viewModel.processIntent(it) }
-                    .collect()
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    intentChannel.receiveAsFlow()
+                        .onEach { viewModel.processIntent(it) }
+                        .collect()
+                }
             }
         }
     }
@@ -89,7 +92,15 @@ class SaveLinkFragment : Fragment() {
     }
 
     private fun handleSideEffects(effect: SaveLinkSideEffect) {
-        Log.d("SaveLink", "effect: $effect")
+        when(effect) {
+            is SaveLinkSideEffect.UpdateLinksFields -> {
+
+            }
+            is SaveLinkSideEffect.ShowErrorAndCloseApp -> {
+                Toast.makeText(requireContext(), effect.errorMsg, Toast.LENGTH_LONG).show()
+                requireActivity().finish()
+            }
+        }
     }
 
 

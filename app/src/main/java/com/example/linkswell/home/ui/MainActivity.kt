@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.linkswell.LinksWellApplication
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         handleIncomingIntent(intent)
         setupNavigation()
+        setupView()
     }
 
     private fun setupNavigation() {
@@ -50,6 +52,26 @@ class MainActivity : AppCompatActivity() {
         } ?: run {
             graph.setStartDestination(R.id.linkGroupsFragment)
             navController.setGraph(graph, null)
+        }
+
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.saveLinkFragment -> {
+                    binding.toolbar.isVisible = false
+                }
+                else -> {
+                    binding.toolbar.isVisible = true
+                }
+            }
+        }
+    }
+
+    private fun setupView() {
+        binding.toolbar.setNavigationOnClickListener {
+            val anythingPoppedOut = navController.popBackStack()
+            if (!anythingPoppedOut) {
+                finish()
+            }
         }
     }
 
