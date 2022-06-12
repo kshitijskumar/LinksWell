@@ -3,17 +3,14 @@ package com.example.linkswell.textprocess
 import android.util.Log
 import android.webkit.URLUtil
 import com.example.linkswell.home.data.models.appmodel.LinkAppModel
-import com.example.linkswell.home.data.repository.ILinksRepository
 import java.net.URI
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TextProcessHelper @Inject constructor(
-    private val linksRepository: ILinksRepository
-){
+class TextProcessHelper @Inject constructor(){
 
-    suspend fun processText(linkText: String): Boolean {
+    suspend fun processText(linkText: String): LinkAppModel? {
         return try {
             val isValidUrl = URLUtil.isValidUrl(linkText)
             Log.d("TextStuff", "is valid $isValidUrl")
@@ -38,12 +35,10 @@ class TextProcessHelper @Inject constructor(
 
             Log.d("TextStuff", "app model $linkAppModel")
 
-            linksRepository.insertLinkDetails(linkAppModel)
-
-            true
+            linkAppModel
         } catch (e: Exception) {
             e.printStackTrace()
-            false
+            null
         }
     }
 }

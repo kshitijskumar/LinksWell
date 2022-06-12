@@ -9,7 +9,27 @@
         android:id="@+id/linkGroupsFragment"
         android:name="com.example.linkswell.home.ui.LinkGroupsFragment"
         android:label="LinkGroupsFragment"
-        tools:layout="@layout/fragment_link_groups"/>
+        tools:layout="@layout/fragment_link_groups">
+        <argument
+            android:name="something"
+            app:argType="string" />
+    </fragment>
+
+    <navigation android:id="@+id/save_link_navigation"
+        app:startDestination="@id/saveLinkFragment">
+        <fragment
+            android:id="@+id/saveLinkFragment"
+            android:name="com.example.linkswell.savelink.SaveLinkFragment"
+            android:label="SaveLinkFragment"
+            tools:layout="@layout/fragment_save_link" >
+            <argument
+                android:name="originalLink"
+                app:argType="string" />
+        </fragment>
+        <action
+            android:id="@+id/action_global_linkGroupsFragment"
+            app:destination="@id/linkGroupsFragment" />
+    </navigation>
 
 
 </navigation>

@@ -24,10 +24,4 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />
 
-    <EditText
-        android:id="@+id/et_temp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
