@@ -12,4 +12,8 @@ class LocalLinksDataSource @Inject constructor(
     override fun getAllLinks(): Flow<List<LinkEntity>> {
         return linksDao.getAllLinks()
     }
+
+    override suspend fun insertLinkDetails(linkEntity: LinkEntity) {
+        linksDao.insertLinkEntity(linkEntity)
+    }
 }

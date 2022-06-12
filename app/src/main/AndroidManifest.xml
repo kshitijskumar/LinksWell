@@ -12,11 +12,18 @@
         android:theme="@style/Theme.LinksWell">
         <activity
             android:name=".home.ui.MainActivity"
-            android:exported="true">
+            android:label="Bookmark"
+            android:exported="true"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
     </application>

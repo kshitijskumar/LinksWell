@@ -1,5 +1,6 @@
 package com.example.linkswell.home.data.repository
 
+import com.example.linkswell.db.entity.toLinkEntity
 import com.example.linkswell.home.data.datasource.ILocalLinksDataSource
 import com.example.linkswell.home.data.models.appmodel.LinkAppModel
 import com.example.linkswell.home.data.models.appmodel.toLinkAppModelsList
@@ -13,5 +14,9 @@ class LinksRepository @Inject constructor(
 
     override fun getAllLinks(): Flow<List<LinkAppModel>> {
         return localLinksDataSource.getAllLinks().map { it.toLinkAppModelsList() }
+    }
+
+    override suspend fun insertLinkDetails(linkAppModel: LinkAppModel) {
+        localLinksDataSource.insertLinkDetails(linkAppModel.toLinkEntity())
     }
 }

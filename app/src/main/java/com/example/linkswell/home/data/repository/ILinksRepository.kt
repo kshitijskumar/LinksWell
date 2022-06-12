@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface ILinksRepository {
 
     fun getAllLinks(): Flow<List<LinkAppModel>>
+
+    suspend fun insertLinkDetails(linkAppModel: LinkAppModel)
 }
