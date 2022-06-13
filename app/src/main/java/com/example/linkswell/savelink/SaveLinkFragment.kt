@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -55,6 +56,7 @@ class SaveLinkFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         bindVm()
+        setupView()
         Log.d("SaveLink", "link: ${args.originalLink}")
         intentChannel.trySend(SaveLinkIntent.OnViewCreated(args.originalLink))
     }
@@ -87,14 +89,30 @@ class SaveLinkFragment : Fragment() {
         }
     }
 
+    private fun setupView() {
+        binding.etGroupName.doAfterTextChanged {
+            intentChannel.trySend(
+                SaveLinkIntent.OnGroupNameEdit(it?.toString() ?: "")
+            )
+        }
+        binding.etNote.doAfterTextChanged {
+            intentChannel.trySend(
+                SaveLinkIntent.OnExtraNoteEdit(it?.toString() ?: "")
+            )
+        }
+    }
+
     private fun render(viewState: SaveLinkViewState) {
         Log.d("SaveLink", "ui: $viewState")
+        binding.tlGroup.error = viewState.groupNameError
     }
 
     private fun handleSideEffects(effect: SaveLinkSideEffect) {
         when(effect) {
             is SaveLinkSideEffect.UpdateLinksFields -> {
-
+                binding.etLink.setText(effect.link)
+                binding.etGroupName.setText(effect.groupName)
+                binding.etNote.setText(effect.extraNote)
             }
             is SaveLinkSideEffect.ShowErrorAndCloseApp -> {
                 Toast.makeText(requireContext(), effect.errorMsg, Toast.LENGTH_LONG).show()

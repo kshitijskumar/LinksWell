@@ -37,7 +37,11 @@ class SaveLinkViewModel @Inject constructor(
     private fun Flow<SaveLinkIntent>.toPartialChange(): Flow<SaveLinkPartialChange> {
         return merge(
             filterIsInstance<SaveLinkIntent.OnViewCreated>()
-                .let { handleOnViewCreatedIntent(it) }
+                .let { handleOnViewCreatedIntent(it) },
+            filterIsInstance<SaveLinkIntent.OnGroupNameEdit>()
+                .let { handleOnGroupNameEditIntent(it) },
+            filterIsInstance<SaveLinkIntent.OnExtraNoteEdit>()
+                .let { handleOnExtraNoteEditIntent(it) }
         )
     }
 
@@ -71,6 +75,26 @@ class SaveLinkViewModel @Inject constructor(
             } ?: run {
                 SaveLinkPartialChange.OnViewCreated.Error("The following link is not a valid link.")
             }
+        }
+    }
+
+    private fun handleOnGroupNameEditIntent(
+        flow: Flow<SaveLinkIntent.OnGroupNameEdit>
+    ): Flow<SaveLinkPartialChange.OnGroupNameEdit> {
+        return flow.map {
+            if (it.newGroupName.isEmpty()) {
+                SaveLinkPartialChange.OnGroupNameEdit.Error(it.newGroupName, "Group name can't be empty")
+            } else {
+                SaveLinkPartialChange.OnGroupNameEdit.Success(it.newGroupName, viewState.value.groupName.toString())
+            }
+        }
+    }
+
+    private fun handleOnExtraNoteEditIntent(
+        flow: Flow<SaveLinkIntent.OnExtraNoteEdit>
+    ): Flow<SaveLinkPartialChange.OnExtraNoteEdit> {
+        return flow.map {
+            SaveLinkPartialChange.OnExtraNoteEdit(it.newExtraNote)
         }
     }
 

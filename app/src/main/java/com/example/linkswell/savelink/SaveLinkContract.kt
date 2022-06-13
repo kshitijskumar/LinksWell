@@ -57,11 +57,13 @@ sealed class SaveLinkPartialChange : PartialChange<SaveLinkViewState> {
                 is Success -> {
                     oldState.copy(
                         groupName = newGroupName,
+                        groupNameError = null,
                         shouldEnableSaveButtons = true
                     )
                 }
                 is Error -> {
                     oldState.copy(
+                        groupName = groupName,
                         groupNameError = errorMsg,
                         shouldEnableSaveButtons = false
                     )
